@@ -1,135 +1,15 @@
-.page {
-  background-color: black;
-  color: white;
-  min-width: 1100px;
-  max-width: 1600px;
-  background-position: center;
-}
+@import url(../vendor/normalize.css);
+@import url(../vendor/fonts.css);
+@import url(../blocks/card.css);
+@import url(../blocks/cards.css);
+@import url(../blocks/footer.css);
+@import url(../blocks/header.css);
+@import url(../blocks/page.css);
+@import url(../blocks/profile.css);
 
-.page__content {
-  margin-left: 200px;
-  margin-right: 200px;
-}
-
-.header {
-  margin-top: 45px;
-  max-width: 880px;
-  height: 74px;
-  border-bottom: 1px solid #545454;
-}
-
-.header__logo {
-}
-
-.profile {
-  max-width: 880px;
-  height: 120px;
-  display: flex;
-  margin-top: 62px;
-}
-
-.profile_image {
-  width: 120px;
-  height: 120px;
-}
-
-.profile__info {
-  margin-left: 30px;
-  align-self: center;
-  font-family: "Inter";
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 21.78px;
-}
-
-.profile__info_span-text {
-  display: block;
-  font-family: "Inter";
-  font-size: 42px;
-  font-weight: 500;
-  line-height: 48px;
-}
-
-.profile__info_edit-button {
-  background: url(../images/Edit\ Button\ .png);
-  border: 1px solid white;
-  width: 24px;
-  height: 24px;
-  margin-left: 18px;
-  align-self: center;
-}
-
-.profile__info_edit-button:hover {
-    background: url(../images/Edit\ Button-hover.png);
-}
-
-.profile__add-button {
-  background: transparent url(../images/Add\ Button.png);
-  border: 1px solid white;
-  width: 150px;
-  height: 50px;
-  margin-left: auto;
-  align-self: center;
-}
-
-.profile__add-button:hover{
-    background: url(../images/Add\ Button-hover.png);
-}
-
-.cards {
-    
-}
-
-.card__list {
-  display: grid;
-  justify-content: center;
-  list-style-type: none;
-  grid-template-columns: repeat(auto-fit, 282px);
-  grid-gap: 17px 20px;
-  
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  padding: 0%;
-}
-
-.card__image {
-  width: 282px;
-  height: 282px;
-}
-
-.card__description {
-  display: flex;
-  background-color: white;
-  color: black;
-  padding: 25px 20px;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card__description_type_title{
-    max-width: 219px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.card__like-button {
-  background: transparent url(../images/heart-disabled.svg) center no-repeat;
-  width: 21px;
-  height: 18px;
-  align-self: center;
-  border-style: none;
-}
-
-.card__like-button:hover{
-    background: url(../images/heart-hover.svg);
-}
-
-.footer{
-    margin-top: 67px;
-    margin-bottom: 60px;
-    margin-right: auto;
+@media screen and (max-width:480px) {
+    .profile {
+        flex-direction: column;
+        justify-content: center;
+    }
 }

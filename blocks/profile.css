@@ -1,0 +1,70 @@
+.profile {
+    max-width: 880px;
+    height: 120px;
+    display: flex;
+    padding-top: 40px;
+  }
+  
+  .profile__image {
+    width: 120px;
+    height: 120px;
+    padding-right: 30px;
+  }
+  
+  .profile__info {
+    display: grid;
+    grid-template-areas: 
+    "title button"
+    "description description"
+    ;
+    grid-template-columns: auto auto;
+  }
+  
+  .profile__info_title {
+    font-family: "Inter";
+    height: 48px;
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 48px;
+    grid-area: title;
+    margin: 0;
+    align-self: center;
+  }
+
+  .profile__info_description{
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.78px;
+    grid-area: description;
+    margin-top: 7px;
+    margin-bottom: 0;
+    height: 22px;
+  }
+  
+  .profile__info_type_button {
+    background: url(../images/Edit\ Button\ .png) center no-repeat;
+    border: 1px solid white;
+    width: 24px;
+    height: 24px;
+    grid-area: button;
+    margin-left: 18px;
+    align-self: center;
+  }
+  
+  .profile__info_edit-button:hover {
+      background: url(../images/Edit\ Button-hover.png);
+  }
+  
+  .profile__add-button {
+    background: transparent url(../images/Add\ Button.png);
+    border: 1px solid white;
+    width: 150px;
+    height: 50px;
+    margin-left: auto;
+    align-self: center;
+  }
+  
+  .profile__add-button:hover{
+      background: url(../images/Add\ Button-hover.png);
+  }
