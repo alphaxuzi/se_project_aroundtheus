@@ -7,7 +7,8 @@
   }
   
   .page__content {
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: auto;
+    margin-right: auto;
     font-family: 'Inter';
+    max-width: 880px;
   }

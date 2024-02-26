@@ -52,7 +52,7 @@
     align-self: center;
   }
   
-  .profile__info_edit-button:hover {
+  .profile__info_type_button:hover {
       background: url(../images/Edit\ Button-hover.png);
   }
   

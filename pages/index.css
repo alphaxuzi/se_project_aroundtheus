@@ -7,9 +7,40 @@
 @import url(../blocks/page.css);
 @import url(../blocks/profile.css);
 
-@media screen and (max-width:480px) {
-    .profile {
-        flex-direction: column;
-        justify-content: center;
+@media screen and (max-width:800px){
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
+    
 }
+
+@media screen and (max-width:320px) {
+    .profile{
+        flex-direction: column;
+    }
+
+    .profile__info{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .profile__description{
+        width: 100%;
+        text-align: center;
+    }
+
+    .profile__add-buttom{
+        margin: 0;
+        width: 100%;
+    }
+
+    .cards{
+        display: flex;
+        flex-direction: column;
+    }
+  }
+
