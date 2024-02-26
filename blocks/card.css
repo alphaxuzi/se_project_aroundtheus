@@ -9,9 +9,9 @@
 .card__list {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, 282px);
   list-style-type: none;
-  grid-gap: 17px 20px;
+  grid-gap: 20px 17px;
   padding: 0;
   margin: 0%;
 }
@@ -36,6 +36,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .card__like-button {

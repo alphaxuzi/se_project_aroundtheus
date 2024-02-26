@@ -7,40 +7,57 @@
 @import url(../blocks/page.css);
 @import url(../blocks/profile.css);
 
-@media screen and (max-width:800px){
-    .cards {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-    
-}
-
-@media screen and (max-width:320px) {
-    .profile{
-        flex-direction: column;
-    }
-
-    .profile__info{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .profile__description{
-        width: 100%;
-        text-align: center;
-    }
-
-    .profile__add-buttom{
-        margin: 0;
-        width: 100%;
-    }
-
-    .cards{
-        display: flex;
-        flex-direction: column;
-    }
+@media screen and (max-width: 480px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 42px;
+    margin-bottom: 36px;
+    height: auto;
+    max-width: 282px;
   }
 
+  .profile__info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .profile__info_title {
+    font-family: "Inter";
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .profile__info_description {
+    width: 100%;
+    font-family: "Inter";
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .profile__add-button {
+    margin: 0;
+  }
+
+  .profile__image {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+  }
+
+  .profile__info_type_button {
+    align-self: flex-start;
+  }
+}
