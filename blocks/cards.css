@@ -1,10 +1,20 @@
 .cards {
-  margin-top: 72px;
-  font-family: Inter;
+  margin-top: 51px;
+  font-family: 'Inter', Arial, sans-serif;
   font-size: 24px;
   font-weight: 900;
   line-height: 29px;
   letter-spacing: 0em;
   text-align: left;
   max-width: 880px;
+}
+
+.cards__list {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 282px);
+  list-style-type: none;
+  grid-gap: 20px 17px;
+  padding: 0;
+  margin: 0%;
 }

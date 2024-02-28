@@ -24,6 +24,6 @@ The way you'll do this at work is by exporting images directly from Figma — we
 
 Good luck and have fun!
 
-link to project (https://github.com/alphaxuzi/se_project_aroundtheus.git)
+link to project (https://alphaxuzi.github.io/se_project_aroundtheus)
 
-link to video - (This will eventually be the link to the video. I do not want to create the video however until I meet all requirements from code review first to ensure that I'm making a video on my best work.)
+link to video - (https://drive.google.com/file/d/11qiyHJMC4_l57m632O7xZnu75NTdJ8SA/view?usp=drive_link)
