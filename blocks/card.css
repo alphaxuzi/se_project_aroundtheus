@@ -4,7 +4,7 @@
   padding: 0%;
   border-radius: 10px;
   overflow: hidden;
-  height: 361px;
+  min-height: 361px;
 }
 
 .card__image {
@@ -22,14 +22,14 @@
   justify-content: space-between;
 }
 
-.card__description_type_title {
+.card__title {
   max-width: 219px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   margin-top: 25px;
   margin-bottom: 25px;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   font-size: 24px;
   font-weight: 900;
   line-height: 29px;
@@ -44,8 +44,9 @@
   align-self: center;
   border-style: none;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .card__like-button:hover {
-  opacity: 60%;
+  opacity: 50%;
 }
