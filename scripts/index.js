@@ -6,3 +6,16 @@ let initialCards = [
     { name: "Arctic Fox", link: "https://unsplash.com/photos/selective-focus-photography-of-gray-wolf-on-snow-field-V__yW0wQCOs" },
     { name: "Great Wall of China", link: "https://unsplash.com/photos/a-view-of-the-great-wall-of-china-in-the-fog-80OWrQGTtG8" }
 ]
+
+let profileEditButton = document.querySelector(".profile__edit-button");
+let profileEditModal = document.querySelector(".modal")
+
+profileEditButton.addEventListener("click", () => {
+    profileEditModal.classList.add('modal__opened')
+});
+
+let modalExitButton = document.querySelector('.modal__exit-button')
+    modalExitButton.addEventListener('click', () => {
+        profileEditModal.classList.remove('modal__opened')
+    });
+
