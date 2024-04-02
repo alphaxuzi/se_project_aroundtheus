@@ -47,6 +47,16 @@
   cursor: pointer;
 }
 
+.card__like-button_active {
+  background: url(../images/heart-Active.svg) center no-repeat;
+  width: 21px;
+  height: 18px;
+  align-self: center;
+  border-style: none;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
 .card__like-button:hover {
   opacity: 50%;
 }
