@@ -9,11 +9,16 @@
   justify-content: center;
   align-items: center;
   padding: 0 19px;
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transition:  opacity ease-in-out 0.5s, visibility ease-in-out 0.3s;
 }
 
 .modal_opened {
   display: flex;
+  visibility: visible;
+  opacity: 1;
+  
 }
 
 .modal__container {
@@ -39,6 +44,12 @@
   background-image: url(../images/Close-button.svg);
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+#image-exit-button {
+  position: relative;
+  max-width: 40px;
+  max-height: 40px;
 }
 
 .modal__header {

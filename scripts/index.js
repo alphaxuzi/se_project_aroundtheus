@@ -107,6 +107,7 @@ function getCardElement(cardData) {
 
   likeButton.addEventListener("click", () => {
     likeButton.classList.toggle("card__like-button_active");
+    
   });
 
   deleteButton.addEventListener("click", () => {
@@ -124,22 +125,14 @@ function getCardElement(cardData) {
     pictureModal.classList.add("modal_opened");
   });
 
+  const modalImgExitButton = document.querySelector("#image-exit-button")
+  modalImgExitButton.addEventListener('click', () => {
+    const pictureModal = document.querySelector("#image-modal")
+    pictureModal.classList.remove('modal_opened')
+  }); 
+
   return cardElement;
 }
 
 // Picture Modal
 
-const pictureModal = document.querySelector("#image-modal");
-
-function closeImgModal() {
-  pictureModal.classList.remove("modal_opened");
-}
-
-document.addEventListener("click", (event) => {
-  if (
-    event.target === pictureModal ||
-    !pictureModal.contains(event.target)
-  ) {
-    closeImgModal();
-  }
-});
