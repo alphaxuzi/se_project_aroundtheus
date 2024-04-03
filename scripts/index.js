@@ -114,7 +114,8 @@ function getCardElement(cardData) {
     cardElement.remove();
   });
 
-  cardElement.addEventListener("click", () => {
+  
+  cardImageEl.addEventListener("click", () => {
     const modalImage = document.querySelector(".modal__image");
     const modalDescription = document.querySelector(".modal__description");
 
