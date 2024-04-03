@@ -46,6 +46,7 @@
 
 .modal__exit-button:hover {
   cursor: pointer;
+  opacity: .8;
 }
 
 .modal__exit-button_image {
@@ -103,8 +104,9 @@
   border-radius: 2px;
 }
 
-.modal__save-button {
+.modal__save-button:hover {
   cursor: pointer;
+  opacity: 0.8;
 }
 
 .modal__container_image {
