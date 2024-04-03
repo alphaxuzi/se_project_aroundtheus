@@ -9,16 +9,15 @@
   justify-content: center;
   align-items: center;
   padding: 0 19px;
+  display: flex;
   visibility: hidden;
   opacity: 0;
-  transition:  opacity ease-in-out 0.5s, visibility ease-in-out 0.3s;
+  transition: opacity ease-in-out 0.5s, visibility ease-in-out 0.3s;
 }
 
 .modal_opened {
-  display: flex;
   visibility: visible;
   opacity: 1;
-  
 }
 
 .modal__container {
@@ -35,7 +34,6 @@
 .modal__exit-button {
   border: none;
   background-color: transparent;
-  cursor: pointer;
   position: absolute;
   bottom: calc(100% + 5px);
   left: calc(100% + 5px);
@@ -46,14 +44,18 @@
   background-size: contain;
 }
 
-#image-exit-button {
+.modal__exit-button:hover {
+  cursor: pointer;
+}
+
+.modal__exit-button_image {
   position: relative;
   max-width: 40px;
   max-height: 40px;
 }
 
 .modal__header {
-  font-family: "Inter";
+  font-family: "Inter", Arial, sans-serif;
   color: black;
   font-size: 24px;
   font-weight: 900;
@@ -86,7 +88,7 @@
 }
 
 .modal__save-button {
-  width: 358px;
+  width: 100%;
   height: 50px;
   background-color: black;
   margin-top: 18px;
@@ -101,6 +103,10 @@
   border-radius: 2px;
 }
 
+.modal__save-button {
+  cursor: pointer;
+}
+
 .modal__container_image {
   display: flex;
   flex-direction: column;
@@ -112,47 +118,42 @@
 }
 
 .modal__description {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-size: 12px;
   font-weight: 400;
   line-height: 14.52px;
   text-align: left;
-  
 }
 
-
 @media screen and (max-width: 510px) {
-  .modal{
+  .modal {
     width: 282px;
     height: 322px;
-    
   }
-  .modal__container{
+  .modal__container {
     position: relative;
     width: 282px;
     height: 322px;
     padding: 0;
     top: 123px;
   }
-  .modal__input{
+  .modal__input {
     margin-left: 22px;
     width: 238px;
   }
 
-  .modal__header{
+  .modal__header {
     margin-left: 22px;
   }
 
-  .modal__exit-button{
-    bottom: calc(100% + 15px);
-  left: calc(100% - 25px);
-  width: 26px;
-  height: 26px;
+  .modal__exit-button {
+    width: 26px;
+    height: 26px;
   }
 
-  .modal__save-button{
+  .modal__save-button {
     margin-left: 22px;
-    width: 238px;
+    width: 68%;
     height: 46px;
   }
 }

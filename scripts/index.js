@@ -1,4 +1,4 @@
-let initialCards = [
+const initialCards = [
   {
     name: "Shibuya Streets",
     link: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -27,9 +27,9 @@ let initialCards = [
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
-const profileEditModal = document.querySelector(".modal");
-const modalExitButton = document.querySelector(".modal__exit-button");
-const profileForm = document.querySelector(".modal__form");
+const profileEditModal = document.querySelector("#edit-profile");
+const profileExitButton = profileEditModal.querySelector(".modal__exit-button");
+const profileForm = profileEditModal.querySelector(".modal__form");
 const modalTitleInput = document.querySelector("#modalTitle");
 const modalDescriptionInput = document.querySelector("#modalDescription");
 const profileTitle = document.querySelector(".profile__title");
@@ -38,23 +38,31 @@ const profileDescription = document.querySelector(".profile__description");
 // Event Listeners for Profile Editing
 
 profileEditButton.addEventListener("click", () => {
-  profileEditModal.classList.add("modal_opened");
+  openModal(profileEditModal);
   modalDescriptionInput.value = profileDescription.textContent;
   modalTitleInput.value = profileTitle.textContent;
 });
 
+const modal = document.querySelectorAll('.modal')
 
-function closeModal() {
-  profileEditModal.classList.remove("modal_opened");
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
 }
 
-modalExitButton.addEventListener("click", closeModal);
+function openModal(modal) {
+  modal.classList.add('modal_opened');
+}
+
+profileExitButton.addEventListener("click", () =>{
+  closeModal(profileEditModal);
+});
 
 profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  closeModal();
+  closeModal(profileEditModal);
   profileTitle.textContent = modalTitleInput.value;
   profileDescription.textContent = modalDescriptionInput.value;
+  evt.reset();
 });
 
 // Add Place Section
@@ -65,11 +73,11 @@ const addPlaceForm = document.querySelector("#add-place-form");
 
 // Add Place Event Listeners
 profileAddButton.addEventListener("click", () => {
-  addPlaceModal.classList.add("modal_opened");
+  openModal(addPlaceModal);
 });
 
-modalExitButton2.addEventListener("click", () => {
-  addPlaceModal.classList.remove("modal_opened");
+modalExitButton2.addEventListener("click", () =>{
+  closeModal(addPlaceModal);
 });
 
 addPlaceForm.addEventListener("submit", (evt) => {
@@ -79,7 +87,8 @@ addPlaceForm.addEventListener("submit", (evt) => {
   const cardData = { name, link };
   const cardElement = getCardElement(cardData);
   cardListEl.prepend(cardElement);
-  addPlaceModal.classList.remove("modal_opened");
+  closeModal(addPlaceModal);
+  evt.reset();
 });
 
 // Cards Section
@@ -102,7 +111,7 @@ function getCardElement(cardData) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
   cardImageEl.setAttribute("src", cardData.link);
-  cardImageEl.setAttribute("alt", cardData.name);
+  cardImageEl.setAttribute("alt", "Photo of ${cardData.name}");
   cardTitleEl.textContent = cardData.name;
 
   likeButton.addEventListener("click", () => {
@@ -114,26 +123,22 @@ function getCardElement(cardData) {
     cardElement.remove();
   });
 
-  
+  const modalImage = document.querySelector(".modal__image");
+  const pictureModal = document.querySelector("#image-modal");
+
   cardImageEl.addEventListener("click", () => {
-    const modalImage = document.querySelector(".modal__image");
-    const modalDescription = document.querySelector(".modal__description");
-
     modalImage.setAttribute("src", cardData.link);
+    modalImage.setAttribute("alt", cardData.name)
+    const modalDescription = document.querySelector(".modal__description");
     modalDescription.textContent = cardData.name;
-
-    const pictureModal = document.querySelector("#image-modal");
-    pictureModal.classList.add("modal_opened");
+    openModal(pictureModal);
   });
 
   const modalImgExitButton = document.querySelector("#image-exit-button")
   modalImgExitButton.addEventListener('click', () => {
-    const pictureModal = document.querySelector("#image-modal")
-    pictureModal.classList.remove('modal_opened')
+    closeModal(pictureModal);
   }); 
 
   return cardElement;
 }
-
-// Picture Modal
 
