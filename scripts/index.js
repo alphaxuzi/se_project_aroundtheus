@@ -46,6 +46,27 @@ function openModal(modal) {
   modal.classList.add("modal_opened");
 }
 
+function isOutsideModal(target) {
+  return target.closest(".modal");
+}
+
+document.body.addEventListener("click", (evt) => {
+  const target = evt.target;
+  const isOutside = isOutsideModal(target);
+
+  if (isOutside) {
+    modal.forEach(closeModal);
+  }
+});
+
+function escKeyCloseModal(evt) {
+  if (evt.key === "Escape") {
+    modal.forEach(closeModal);
+  }
+}
+
+document.body.addEventListener("keydown", escKeyCloseModal);
+
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
   openModal(profileEditModal);
@@ -111,7 +132,7 @@ function getCardElement(cardData) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
   cardImageEl.setAttribute("src", cardData.link);
-  cardImageEl.setAttribute("alt", "Photo of ${cardData.name}");
+  cardImageEl.setAttribute("alt", `Photo of ${cardData.name}`);
   cardTitleEl.textContent = cardData.name;
 
   likeButton.addEventListener("click", () => {

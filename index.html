@@ -49,20 +49,32 @@
         <button class="modal__exit-button"></button>
         <h1 class="modal__header">Edit Profile</h1>
         <form class="modal__form">
-          <input
-            class="modal__input"
-            type="text"
-            name="title"
-            id="modalTitle"
-            placeholder="Name"
-          />
-          <input
-            class="modal__input"
-            type="text"
-            name="description"
-            id="modalDescription"
-            placeholder="Description"
-          />
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="text"
+              name="title"
+              id="modalTitle"
+              placeholder="Name"
+              minlength="2"
+              maxlength="40"
+              required
+            />
+            <span class="modal__error" id="modalTitle-error"></span>
+          </label>
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="text"
+              name="description"
+              id="modalDescription"
+              placeholder="Description"
+              minlength="2"
+              maxlength="200"
+              required
+            />
+            <span class="modal__error" id="modalDescription-error"></span>
+          </label>
           <button type="submit" class="modal__save-button">Save</button>
         </form>
       </div>
@@ -73,21 +85,28 @@
         <button class="modal__exit-button" id="exit-button"></button>
         <h1 class="modal__header">New Place</h1>
         <form class="modal__form" id="add-place-form">
-          <input
-            class="modal__input"
-            type="text"
-            name="title"
-            id="modal-title"
-            placeholder="Title"
-          />
-          <input
-            class="modal__input"
-            type="url"
-            name="description"
-            id="modal-description"
-            placeholder="Image URL"
-            required
-          />
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="text"
+              name="title"
+              id="modal-title"
+              placeholder="Title"
+              required
+            />
+            <span class="modal__error" id="modal-title-error"></span>
+          </label>
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="url"
+              name="description"
+              id="modal-description"
+              placeholder="Image URL"
+              required
+            />
+            <span class="modal__error" id="modal-description-error"></span>
+          </label>
           <button type="submit" class="modal__save-button">Save</button>
         </form>
       </div>
@@ -115,5 +134,6 @@
       </li>
     </template>
     <script src="./scripts/index.js" defer></script>
+    <script src="./scripts/validate.js" defer></script>
   </body>
 </html>
