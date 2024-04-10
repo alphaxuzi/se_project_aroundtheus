@@ -112,7 +112,17 @@
 
 .modal__save-button:hover {
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.8;
+}
+
+.modal__save-button:not(:disabled){
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.modal__save-button_disabled:hover {
+  opacity: .5;
+  cursor: default;
 }
 
 .modal__container_image {

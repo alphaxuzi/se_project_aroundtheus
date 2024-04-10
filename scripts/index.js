@@ -40,32 +40,31 @@ const modal = document.querySelectorAll(".modal");
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", closeModalWithEsc);
 }
 
 function openModal(modal) {
   modal.classList.add("modal_opened");
+  document.addEventListener("keydown", closeModalWithEsc);
 }
 
-function isOutsideModal(target) {
-  return target.closest(".modal");
-}
-
-document.body.addEventListener("click", (evt) => {
-  const target = evt.target;
-  const isOutside = isOutsideModal(target);
-
-  if (isOutside) {
-    modal.forEach(closeModal);
+function closeModalOnRemoteClick(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
   }
+}
+
+modal.forEach((modalEl) => {
+  modalEl.addEventListener("mousedown", closeModalOnRemoteClick);
 });
 
-function escKeyCloseModal(evt) {
+function closeModalWithEsc(evt) {
   if (evt.key === "Escape") {
-    modal.forEach(closeModal);
+    const openedModal = document.querySelector(".modal_opened");
+    closeModal(openedModal);
   }
 }
 
-document.body.addEventListener("keydown", escKeyCloseModal);
 
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
