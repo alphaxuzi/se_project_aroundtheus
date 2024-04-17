@@ -1,3 +1,6 @@
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+
 const initialCards = [
   {
     name: "Shibuya Streets",
@@ -24,6 +27,20 @@ const initialCards = [
     link: "https://plus.unsplash.com/premium_photo-1664304488525-44a96338c0cc?q=80&w=2950&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
+
+const cardData =  {
+  name: "Shibuya Streets",
+  link: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+}
+
+function handleImageClick(cardData) {
+
+}
+
+
+const card = new Card(cardData, "#card-template", handleImageClick);
+
+
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -144,13 +161,14 @@ function getCardElement(cardData) {
 
   const modalImage = document.querySelector(".modal__image");
 
-  cardImageEl.addEventListener("click", () => {
+  function handleImageClick() { cardImageEl.addEventListener("click", () => {
     modalImage.setAttribute("src", cardData.link);
     modalImage.setAttribute("alt", cardData.name);
     const modalDescription = document.querySelector(".modal__description");
     modalDescription.textContent = cardData.name;
     openModal(pictureModal);
-  });
+  })
+  };
   return cardElement;
 }
 

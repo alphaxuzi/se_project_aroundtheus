@@ -1,3 +1,20 @@
+class FormValidator {
+  constructor(settings, FormElement) {
+    this._settings = settings;
+    this._FormElement = FormElement;
+  }
+
+  _checkInputValidity() {}
+
+  _disableSubmitButton() {}
+
+  _setEventHandlers() {}
+
+  enableValidation() {}
+
+  toggleButtonState() {}
+}
+
 // Validition Form Edit Profile
 function showInputError(formEl, inputEl, options) {
   const errorMessageEl = formEl.querySelector(`#${inputEl.id}-error`);
@@ -21,11 +38,12 @@ function checkInputValidity(formEl, inputEl, options) {
   }
 }
 
-const checkFormValidity  = inputs => inputs.every(input => input.validity.valid);
+const checkFormValidity = (inputs) =>
+  inputs.every((input) => input.validity.valid);
 
 function toggleButtonState(inputEls, submitButton, options) {
   const inactiveButtonClass = options.inactiveButtonClass;
-  const isFormValid = checkFormValidity(inputEls)
+  const isFormValid = checkFormValidity(inputEls);
 
   if (isFormValid) {
     submitButton.classList.remove(inactiveButtonClass);
@@ -59,13 +77,5 @@ function enableValidation(options) {
   });
 }
 
-const config = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__save-button",
-  inactiveButtonClass: "modal__save-button_disabled",
-  inputErrorClass: "modal__error",
-  errorClass: "modal__error_visible",
-};
 
 enableValidation(config);
