@@ -1,19 +1,4 @@
-class FormValidator {
-  constructor(settings, FormElement) {
-    this._settings = settings;
-    this._FormElement = FormElement;
-  }
 
-  _checkInputValidity() {}
-
-  _disableSubmitButton() {}
-
-  _setEventHandlers() {}
-
-  enableValidation() {}
-
-  toggleButtonState() {}
-}
 
 // Validition Form Edit Profile
 function showInputError(formEl, inputEl, options) {

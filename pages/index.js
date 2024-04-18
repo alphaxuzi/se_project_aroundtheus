@@ -37,10 +37,18 @@ function handleImageClick(cardData) {
 
 }
 
-
 const card = new Card(cardData, "#card-template", handleImageClick);
 
+const formElement = document.querySelector(".modal__form")
 
+let validate = new FormValidator({formSelector: ".modal__form",
+inputSelector: ".modal__input",
+submitButtonSelector: ".modal__save-button",
+inactiveButtonClass: "modal__save-button_disabled",
+inputErrorClass: "modal__error",
+errorClass: "modal__error_visible",}, formElement)
+
+validate.enableValidation();
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -161,16 +169,18 @@ function getCardElement(cardData) {
 
   const modalImage = document.querySelector(".modal__image");
 
-  function handleImageClick() { cardImageEl.addEventListener("click", () => {
+  cardImageEl.addEventListener("click", () => {
     modalImage.setAttribute("src", cardData.link);
     modalImage.setAttribute("alt", cardData.name);
     const modalDescription = document.querySelector(".modal__description");
     modalDescription.textContent = cardData.name;
     openModal(pictureModal);
   })
-  };
+
   return cardElement;
-}
+  };
+  
+
 
 const pictureModal = document.querySelector("#image-modal");
 const modalImgExitButton = document.querySelector("#image-exit-button");
