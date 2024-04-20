@@ -1,11 +1,11 @@
 let config = {
-    formSelector: ".modal__form",
-    inputSelector: ".modal__input",
-    submitButtonSelector: ".modal__save-button",
-    inactiveButtonClass: "modal__save-button_disabled",
-    inputErrorClass: "modal__error",
-    errorClass: "modal__error_visible",
-  };
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__save-button",
+  inactiveButtonClass: "modal__save-button_disabled",
+  inputErrorClass: "modal__error",
+  errorClass: "modal__error_visible",
+};
 
 export default class FormValidator {
     constructor(settings, formElement) {
@@ -36,8 +36,9 @@ export default class FormValidator {
     }
   
     _checkFormValidity() {
-      return this._formElement.querySelectorAll(this._settings.inputSelector)
-        .every(inputElement => inputElement.validity.valid);
+      const inputElements = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
+      
+      return inputElements.every(inputElement => inputElement.validity.valid);
     }
   
     _toggleButtonState() {
@@ -52,6 +53,7 @@ export default class FormValidator {
         submitButton.disabled = true;
       }
     }
+
     _setEventListeners() {
         const inputElements = Array.from(this._formElement.querySelectorAll(this._settings.inputSelector));
         const submitButton = this._formElement.querySelector(this._settings.submitButtonSelector);
@@ -68,7 +70,7 @@ export default class FormValidator {
         this._formElement.addEventListener("submit", evt => {
           evt.preventDefault();
         });
-       
+
         this._setEventListeners();
       }
     }
