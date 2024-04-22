@@ -28,27 +28,46 @@ const initialCards = [
   },
 ];
 
-const cardData =  {
+const cardData = {
   name: "Shibuya Streets",
   link: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-}
+};
 
-function handleImageClick(cardData) {
-
-}
+function handleImageClick(cardData) {}
 
 const card = new Card(cardData, "#card-template", handleImageClick);
 
-const formElement = document.querySelector(".modal__form")
+const editProfileFormElement = document.querySelector("#edit-profile");
 
-let validate = new FormValidator({formSelector: ".modal__form",
-inputSelector: ".modal__input",
-submitButtonSelector: ".modal__save-button",
-inactiveButtonClass: "modal__save-button_disabled",
-inputErrorClass: "modal__error",
-errorClass: "modal__error_visible",}, formElement)
+let validateProfile = new FormValidator(
+  {
+    formSelector: ".modal__form",
+    inputSelector: ".modal__input",
+    submitButtonSelector: ".modal__save-button",
+    inactiveButtonClass: "modal__save-button_disabled",
+    inputErrorClass: "modal__error",
+    errorClass: "modal__error_visible",
+  },
+  editProfileFormElement
+);
 
-validate.enableValidation();
+validateProfile.enableValidation();
+
+const addPlaceFormElement = document.querySelector("#add-place");
+
+let validateAddPlace = new FormValidator(
+  {
+    formSelector: ".modal__form",
+    inputSelector: ".modal__input",
+    submitButtonSelector: ".modal__save-button",
+    inactiveButtonClass: "modal__save-button_disabled",
+    inputErrorClass: "modal__error",
+    errorClass: "modal__error_visible",
+  },
+  addPlaceFormElement
+);
+
+validateAddPlace.enableValidation();
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -89,7 +108,6 @@ function closeModalWithEsc(evt) {
     closeModal(openedModal);
   }
 }
-
 
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
@@ -175,12 +193,10 @@ function getCardElement(cardData) {
     const modalDescription = document.querySelector(".modal__description");
     modalDescription.textContent = cardData.name;
     openModal(pictureModal);
-  })
+  });
 
   return cardElement;
-  };
-  
-
+}
 
 const pictureModal = document.querySelector("#image-modal");
 const modalImgExitButton = document.querySelector("#image-exit-button");
