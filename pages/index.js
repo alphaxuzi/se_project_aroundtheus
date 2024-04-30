@@ -35,8 +35,6 @@ const cardData = {
 
 function handleImageClick(cardData) {}
 
-const card = new Card(cardData, "#card-template", handleImageClick);
-
 const editProfileFormElement = document.querySelector("#edit-profile");
 
 let validateProfile = new FormValidator(
@@ -148,7 +146,8 @@ addPlaceForm.addEventListener("submit", (evt) => {
   const name = cardTitleInput.value;
   const link = cardUrlInput.value;
   const cardData = { name, link };
-  const cardElement = getCardElement(cardData);
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  const cardElement = card.getCardView();
   cardListEl.prepend(cardElement);
   closeModal(addPlaceModal);
   evt.target.reset();
@@ -162,41 +161,10 @@ const cardTitleInput = document.querySelector("#modal-title");
 const cardUrlInput = document.querySelector("#modal-description");
 
 initialCards.forEach((cardData) => {
-  const cardElement = getCardElement(cardData);
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  const cardElement = card.getCardView();
   cardListEl.prepend(cardElement);
 });
-
-function getCardElement(cardData) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardImageEl = cardElement.querySelector(".card__image");
-  const cardTitleEl = cardElement.querySelector(".card__title");
-  const likeButton = cardElement.querySelector(".card__like-button");
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-
-  cardImageEl.setAttribute("src", cardData.link);
-  cardImageEl.setAttribute("alt", `Photo of ${cardData.name}`);
-  cardTitleEl.textContent = cardData.name;
-
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
-  });
-
-  deleteButton.addEventListener("click", () => {
-    cardElement.remove();
-  });
-
-  const modalImage = document.querySelector(".modal__image");
-
-  cardImageEl.addEventListener("click", () => {
-    modalImage.setAttribute("src", cardData.link);
-    modalImage.setAttribute("alt", cardData.name);
-    const modalDescription = document.querySelector(".modal__description");
-    modalDescription.textContent = cardData.name;
-    openModal(pictureModal);
-  });
-
-  return cardElement;
-}
 
 const pictureModal = document.querySelector("#image-modal");
 const modalImgExitButton = document.querySelector("#image-exit-button");
