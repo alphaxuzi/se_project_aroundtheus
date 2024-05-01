@@ -35,14 +35,7 @@ export default class Card {
     this._cardElement.remove();
   }
 
-  _handleImageClick() {
-    const modalImage = document.querySelector(".modal__image");
-
-      openModal(pictureModal);
-    };
-  
-
-  getCardView()  {
+  getCardView() {
     this._cardElement = document
       .querySelector(this._cardSelector)
       .content.querySelector(".card")
@@ -56,7 +49,7 @@ export default class Card {
     cardTitleEl.textContent = this._cardData.name;
 
     this._setEventListeners();
-    
+
     return this._cardElement;
   }
-};
+}
