@@ -28,12 +28,7 @@ const initialCards = [
   },
 ];
 
-const cardData = {
-  name: "Shibuya Streets",
-  link: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-};
-
-function handleImageClick(cardData) {}
+function handleImageClick(pictureModal) {};
 
 const editProfileFormElement = document.querySelector("#edit-profile");
 
@@ -172,3 +167,24 @@ const modalImgExitButton = document.querySelector("#image-exit-button");
 modalImgExitButton.addEventListener("click", () => {
   closeModal(pictureModal);
 });
+
+
+/// yesssss
+
+
+function getCardElement(cardData) {
+  const cardElement = cardTemplate.cloneNode(true);
+
+
+  const modalImage = document.querySelector(".modal__image");
+
+  cardImageEl.addEventListener("click", () => {
+    modalImage.setAttribute("src", cardData.link);
+    modalImage.setAttribute("alt", cardData.name);
+    const modalDescription = document.querySelector(".modal__description");
+    modalDescription.textContent = cardData.name;
+    openModal(pictureModal);
+  });
+
+  return cardElement;
+}

@@ -27,7 +27,7 @@ export default class Card {
 
   _handleLikeIcon() {
     this._cardElement
-      .querySelector(".card_like-button")
+      .querySelector(".card__like-button")
       .classList.toggle("card__like-button_active");
   }
 
@@ -35,14 +35,28 @@ export default class Card {
     this._cardElement.remove();
   }
 
-  _handleImageClick() {}
+  _handleImageClick() {
+    const modalImage = document.querySelector(".modal__image");
 
-  getCardView() {
+      openModal(pictureModal);
+    };
+  
+
+  getCardView()  {
     this._cardElement = document
       .querySelector(this._cardSelector)
       .content.querySelector(".card")
       .cloneNode(true);
 
+    const cardImageEl = this._cardElement.querySelector(".card__image");
+    const cardTitleEl = this._cardElement.querySelector(".card__title");
+
+    cardImageEl.setAttribute("src", this._cardData.link);
+    cardImageEl.setAttribute("alt", `Photo of ${this._cardData.name}`);
+    cardTitleEl.textContent = this._cardData.name;
+
     this._setEventListeners();
+    
+    return this._cardElement;
   }
-}
+};
