@@ -35,10 +35,6 @@ export default class Card {
     this._cardElement.remove();
   }
 
-  _handleImageClick() {
-    this._handleImageClick;
-    }
-
   getCardView() {
     this._cardElement = document
       .querySelector(this._cardSelector)

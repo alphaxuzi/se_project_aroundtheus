@@ -116,7 +116,7 @@
 }
 
 .modal__save-button_disabled:hover {
-  opacity: .5;
+  opacity: 0.5;
   cursor: default;
 }
 
@@ -169,9 +169,16 @@
     width: 238px;
   }
 
+  .modal__form {
+    width: inherit;
+  }
+
   .modal__header {
-    height: 18px;
+    font-family: "Inter";
+    font-weight: 900;
+    font-size: 18px;
     margin-left: 22px;
+    margin-bottom: 40px;
   }
 
   .modal__exit-button {
@@ -180,8 +187,10 @@
   }
 
   .modal__save-button {
-    margin-left: 22px;
-    width: 68%;
+    margin-left: auto;
+    width: 90%;
     height: 46px;
+    margin-right: auto;
+    margin-top: 60px;
   }
 }

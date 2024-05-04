@@ -119,11 +119,11 @@ const config = {
   errorClass: "modal__error_visible",
 };
 
-const validateProfile = new FormValidator(config, profileEditModal);
+const validateProfile = new FormValidator(config, profileForm);
 
 validateProfile.enableValidation();
 
-const validateAddPlace = new FormValidator(config, addPlaceModal);
+const validateAddPlace = new FormValidator(config, addPlaceForm);
 
 validateAddPlace.enableValidation();
 
@@ -138,16 +138,10 @@ function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getCardView();
 
-  const cardImageEl = cardElement.querySelector(".card__image");
-
-  cardImageEl.addEventListener("click", () => {
+  function handleImageClick(cardData) {
     modalImage.setAttribute("src", cardData.link);
     modalImage.setAttribute("alt", cardData.name);
     modalDescription.textContent = cardData.name;
-    openModal(pictureModal);
-  });
-
-  function handleImageClick() {
     openModal(pictureModal);
   }
   return cardElement;
