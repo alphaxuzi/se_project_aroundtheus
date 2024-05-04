@@ -28,29 +28,6 @@ const initialCards = [
   },
 ];
 
-function handleImageClick(cardData) {}
-
-const config = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__save-button",
-  inactiveButtonClass: "modal__save-button_disabled",
-  inputErrorClass: "modal__error",
-  errorClass: "modal__error_visible",
-};
-
-const editProfileFormElement = document.querySelector("#edit-profile");
-
-const validateProfile = new FormValidator(config, editProfileFormElement);
-
-validateProfile.enableValidation();
-
-const addPlaceFormElement = document.querySelector("#add-place");
-
-const validateAddPlace = new FormValidator(config, addPlaceFormElement);
-
-validateAddPlace.enableValidation();
-
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileEditModal = document.querySelector("#edit-profile");
@@ -116,7 +93,6 @@ const profileAddButton = document.querySelector(".profile__add-button");
 const cardModalExitButton = document.querySelector("#exit-button");
 const addPlaceForm = document.querySelector("#add-place-form");
 
-// Add Place Event Listeners
 profileAddButton.addEventListener("click", () => {
   openModal(addPlaceModal);
 });
@@ -125,43 +101,71 @@ cardModalExitButton.addEventListener("click", () => {
   closeModal(addPlaceModal);
 });
 
-addPlaceForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = cardTitleInput.value;
-  const link = cardUrlInput.value;
-  const cardData = { name, link };
-  const card = new Card(cardData, "#card-template", handleImageClick);
-  const cardElement = card.getCardView();
-
-  cardListEl.prepend(cardElement);
-  closeModal(addPlaceModal);
-  evt.target.reset();
-});
 const pictureModal = document.querySelector("#image-modal");
 const modalImgExitButton = document.querySelector("#image-exit-button");
 
 modalImgExitButton.addEventListener("click", () => {
   closeModal(pictureModal);
 });
+
+//initialization
+
+const config = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__save-button",
+  inactiveButtonClass: "modal__save-button_disabled",
+  inputErrorClass: "modal__error",
+  errorClass: "modal__error_visible",
+};
+
+const validateProfile = new FormValidator(config, profileEditModal);
+
+validateProfile.enableValidation();
+
+const validateAddPlace = new FormValidator(config, addPlaceModal);
+
+validateAddPlace.enableValidation();
+
 // Cards Section
-const cardTemplate =
-  document.querySelector("#card-template").content.firstElementChild;
 const cardListEl = document.querySelector(".cards__list");
 const cardTitleInput = document.querySelector("#modal-title");
 const cardUrlInput = document.querySelector("#modal-description");
 const modalDescription = document.querySelector(".modal__description");
 const modalImage = document.querySelector(".modal__image");
 
-initialCards.forEach((cardData) => {
+function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getCardView();
+
   const cardImageEl = cardElement.querySelector(".card__image");
 
   cardImageEl.addEventListener("click", () => {
-    modalImage.setAttribute("src", this._cardData.link);
-    modalImage.setAttribute("alt", this._cardData.name);
-    modalDescription.textContent = this._cardData.name;
+    modalImage.setAttribute("src", cardData.link);
+    modalImage.setAttribute("alt", cardData.name);
+    modalDescription.textContent = cardData.name;
     openModal(pictureModal);
   });
+
+  function handleImageClick() {
+    openModal(pictureModal);
+  }
+  return cardElement;
+}
+
+initialCards.forEach((cardData) => {
+  const cardElement = createCard(cardData);
   cardListEl.prepend(cardElement);
+});
+
+addPlaceForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  const name = cardTitleInput.value;
+  const link = cardUrlInput.value;
+  const cardData = { name, link };
+  const cardElement = createCard(cardData);
+
+  cardListEl.prepend(cardElement);
+  closeModal(addPlaceModal);
+  evt.target.reset();
 });
