@@ -85,6 +85,7 @@ profileForm.addEventListener("submit", (evt) => {
   profileTitle.textContent = modalTitleInput.value;
   profileDescription.textContent = modalDescriptionInput.value;
   evt.target.reset();
+  validateProfile.toggleButtonState();
 });
 
 // Add Place Section
@@ -162,4 +163,5 @@ addPlaceForm.addEventListener("submit", (evt) => {
   cardListEl.prepend(cardElement);
   closeModal(addPlaceModal);
   evt.target.reset();
+  validateAddPlace.toggleButtonState();
 });

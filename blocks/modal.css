@@ -184,6 +184,8 @@
   .modal__exit-button {
     width: 26px;
     height: 26px;
+    bottom: calc(100% + 15px);
+    left: calc(100% - 25px);
   }
 
   .modal__save-button {
