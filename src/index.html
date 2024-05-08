@@ -10,28 +10,27 @@
       content="a website that mimics a social media picture sharing app"
     />
     <title>Around the U.S.</title>
-    <link href="./pages/index.css" rel="stylesheet" />
   </head>
   <body class="page">
     <div class="page__content">
       <header class="header">
         <img
           class="header__logo"
-          src="./images/Logo.svg"
-          alt="Around-the-U.S.-logo"
+          src="<%=require('./images/logo.svg')%>"
+          alt="Logo"
         />
       </header>
       <main class="content">
         <section class="profile">
           <img
             class="profile__image"
-            src="./images/Avatar.png"
+            src="<%=require('./images/Avatar.png')%>"
             alt="profile-photo"
           />
           <div class="profile__info">
-            <h1 class="profile__title">Jacques Cousteau</h1>
+            <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
-            <p class="profile__description">Explorer</p>
+            <p class="profile__description"></p>
           </div>
           <button class="profile__add-button" type="button"></button>
         </section>
@@ -135,6 +134,5 @@
         </div>
       </li>
     </template>
-    <script type="module" src="./pages/index.js" defer></script>
   </body>
 </html>
