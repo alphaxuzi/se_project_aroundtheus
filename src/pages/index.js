@@ -40,16 +40,18 @@ profileEditButton.addEventListener("click", () => {
   modalTitleInput.value = profileTitle.textContent;
 });
 
-function handleProfileFormSubmit() {
-  profileForm.addEventListener("submit", (evt) => {
+function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = modalTitleInput.value;
     profileDescription.textContent = modalDescriptionInput.value;
     popupProfileEdit.close();
     evt.target.reset();
     validateProfile.toggleButtonState();
-  });
-}
+  };
+
+  profileForm.addEventListener("submit", (evt) => {
+    handleProfileFormSubmit(evt);
+  })
 
 // Add Place Section
 const addCardButton = document.querySelector(".profile__add-button");
@@ -60,8 +62,6 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit() {
-  addPlaceForm.addEventListener("submit", (evt) => {
-    evt.preventDefault();
     const name = cardTitleInput.value;
     const link = cardUrlInput.value;
     const cardData = { name, link };
@@ -71,8 +71,12 @@ function handleAddPlaceFormSubmit() {
     popupAddPlace.close();
     evt.target.reset();
     validateAddPlace.toggleButtonState();
-  });
-}
+  };
+
+  addPlaceForm.addEventListener("submit", (evt) =>{
+    handleAddPlaceFormSubmit(evt);
+  })
+
 
 //initialization
 
