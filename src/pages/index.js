@@ -5,6 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import { initialCards } from "../utils/constants.js";
+import Section from "../components/Section.js";
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
@@ -40,18 +41,12 @@ profileEditButton.addEventListener("click", () => {
   modalTitleInput.value = profileTitle.textContent;
 });
 
-function handleProfileFormSubmit(evt) {
-    evt.preventDefault();
-    profileTitle.textContent = modalTitleInput.value;
-    profileDescription.textContent = modalDescriptionInput.value;
-    popupProfileEdit.close();
-    evt.target.reset();
-    validateProfile.toggleButtonState();
-  };
-
-  profileForm.addEventListener("submit", (evt) => {
-    handleProfileFormSubmit(evt);
-  })
+function handleProfileFormSubmit({ title, description }) {
+  profileTitle.textContent = title;
+  profileDescription.textContent = description;
+  popupProfileEdit.close();
+  validateProfile.toggleButtonState();
+}
 
 // Add Place Section
 const addCardButton = document.querySelector(".profile__add-button");
@@ -62,21 +57,15 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit() {
-    const name = cardTitleInput.value;
-    const link = cardUrlInput.value;
-    const cardData = { name, link };
-    const cardElement = createCard(cardData);
+  const name = cardTitleInput.value;
+  const link = cardUrlInput.value;
+  const cardData = { name, link };
+  const cardElement = createCard(cardData);
 
-    cardListEl.prepend(cardElement);
-    popupAddPlace.close();
-    evt.target.reset();
-    validateAddPlace.toggleButtonState();
-  };
-
-  addPlaceForm.addEventListener("submit", (evt) =>{
-    handleAddPlaceFormSubmit(evt);
-  })
-
+  cardListEl.prepend(cardElement);
+  popupAddPlace.close();
+  validateAddPlace.toggleButtonState();
+}
 
 //initialization
 
