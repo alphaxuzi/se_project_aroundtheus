@@ -5,14 +5,22 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import { initialCards } from "../utils/constants.js";
+import { config } from "../utils/constants.js"
 import Section from "../components/Section.js";
+
+const section = new Section ({
+  items: initialCards,
+  renderer: (cardData) => {
+    const cardElement = createCard(cardData);
+  },
+},
+".cards__list"
+);
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
 });
-
-userInfo.getUserInfo();
 
 userInfo.setUserInfo({ name: "Name", job: "Job" });
 
@@ -37,13 +45,17 @@ popupAddPlace.setEventListeners();
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
   popupProfileEdit.open();
-  modalDescriptionInput.value = profileDescription.textContent;
-  modalTitleInput.value = profileTitle.textContent;
+  const {name, job} = userInfo.getUserInfo()
+  modalTitleInput.value = name;
+  modalDescriptionInput.value = job;
+
 });
 
 function handleProfileFormSubmit({ title, description }) {
-  profileTitle.textContent = title;
+   profileTitle.textContent = title;
   profileDescription.textContent = description;
+  const { name, job } = userInfo.getUserInfo();
+  userInfo.setUserInfo({ name, job });
   popupProfileEdit.close();
   validateProfile.toggleButtonState();
 }
@@ -62,22 +74,12 @@ function handleAddPlaceFormSubmit() {
   const cardData = { name, link };
   const cardElement = createCard(cardData);
 
-  cardListEl.prepend(cardElement);
+  section.addItem(cardElement);
   popupAddPlace.close();
   validateAddPlace.toggleButtonState();
 }
 
 //initialization
-
-const config = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__save-button",
-  inactiveButtonClass: "modal__save-button_disabled",
-  inputErrorClass: "modal__error",
-  errorClass: "modal__error_visible",
-};
-
 const validateProfile = new FormValidator(config, profileForm);
 validateProfile.enableValidation();
 
@@ -106,3 +108,4 @@ initialCards.forEach((cardData) => {
   const cardElement = createCard(cardData);
   cardListEl.prepend(cardElement);
 });
+
