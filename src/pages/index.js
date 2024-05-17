@@ -11,20 +11,23 @@ import Section from "../components/Section.js";
 function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   const cardElement = card.getCardView();
-
-  function handleImageClick(cardData) {
-    popupWithImage.open(cardData);
-  }
   return cardElement;
 }
 
+function handleImageClick(cardData) {
+  popupWithImage.open(cardData);
+}
+
+const cardListEl = document.querySelector(".cards__list");
 
 const section = new Section({
   items: initialCards,
   renderer: (cardData) => {
-    createCard(cardData);
+    const cardElement = createCard(cardData);
+    cardListEl.prepend(cardElement); 
   },
 }, ".cards__list");
+
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
@@ -76,12 +79,13 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
-  const { name, link } = data; // Destructures the 'name' and 'link' properties from the data object.
-  const cardData = { name, link };
+  const { title, link } = data;
+  const cardData = { name: title, link: link };
   const cardElement = createCard(cardData);
 
   section.addItem(cardElement);
   popupAddPlace.close();
+  popupAddPlace.resetForm();
   validateAddPlace.toggleButtonState();
   
 }
@@ -96,15 +100,14 @@ validateAddPlace.enableValidation();
 const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
 
 // Cards Section
-const cardListEl = document.querySelector(".cards__list");
 // const cardTitleInput = document.querySelector("#modal-title");
 // const cardUrlInput = document.querySelector("#modal-description");
 
-initialCards.forEach((cardData) => {
-  const cardElement = createCard(cardData);
-  cardListEl.prepend(cardElement);
- });
+//  initialCards.forEach((cardData) => {
+ // const cardElement = createCard(cardData);
+ // cardListEl.prepend(cardElement);
+ // }); 
 
-section.renderItems();
+// section.renderItems();
 
 popupWithImage.setEventListeners();
