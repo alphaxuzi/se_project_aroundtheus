@@ -8,14 +8,23 @@ import { initialCards } from "../utils/constants.js";
 import { config } from "../utils/constants.js"
 import Section from "../components/Section.js";
 
-const section = new Section ({
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  const cardElement = card.getCardView();
+
+  function handleImageClick(cardData) {
+    popupWithImage.open(cardData);
+  }
+  return cardElement;
+}
+
+
+const section = new Section({
   items: initialCards,
   renderer: (cardData) => {
-    const cardElement = createCard(cardData);
+    createCard(cardData);
   },
-},
-".cards__list"
-);
+}, ".cards__list");
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
@@ -30,8 +39,8 @@ const profileEditModal = document.querySelector("#edit-profile");
 const profileForm = profileEditModal.querySelector(".modal__form");
 const modalTitleInput = document.querySelector("#modalTitle");
 const modalDescriptionInput = document.querySelector("#modalDescription");
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
+// const profileTitle = document.querySelector(".profile__title");
+// const profileDescription = document.querySelector(".profile__description");
 
 const popupProfileEdit = new PopupWithForm(
   "#edit-profile",
@@ -44,19 +53,17 @@ popupAddPlace.setEventListeners();
 
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
-  popupProfileEdit.open();
   const {name, job} = userInfo.getUserInfo()
-  modalTitleInput.value = name;
-  modalDescriptionInput.value = job;
+  modalTitleInput.textContent = name;
+  modalDescriptionInput.textContent = job;
+  popupProfileEdit.open();
 
 });
 
 function handleProfileFormSubmit({ title, description }) {
-   profileTitle.textContent = title;
-  profileDescription.textContent = description;
-  const { name, job } = userInfo.getUserInfo();
-  userInfo.setUserInfo({ name, job });
+  userInfo.setUserInfo({ name: title, job: description });
   popupProfileEdit.close();
+  profileForm.reset();
   validateProfile.toggleButtonState();
 }
 
@@ -68,15 +75,15 @@ addCardButton.addEventListener("click", () => {
   popupAddPlace.open();
 });
 
-function handleAddPlaceFormSubmit() {
-  const name = cardTitleInput.value;
-  const link = cardUrlInput.value;
+function handleAddPlaceFormSubmit(data) {
+  const { name, link } = data; // Destructures the 'name' and 'link' properties from the data object.
   const cardData = { name, link };
   const cardElement = createCard(cardData);
 
   section.addItem(cardElement);
   popupAddPlace.close();
   validateAddPlace.toggleButtonState();
+  
 }
 
 //initialization
@@ -90,22 +97,14 @@ const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
 
 // Cards Section
 const cardListEl = document.querySelector(".cards__list");
-const cardTitleInput = document.querySelector("#modal-title");
-const cardUrlInput = document.querySelector("#modal-description");
-
-function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
-  const cardElement = card.getCardView();
-
-  function handleImageClick(cardData) {
-    popupWithImage.open(cardData);
-    popupWithImage.setEventListeners();
-  }
-  return cardElement;
-}
+// const cardTitleInput = document.querySelector("#modal-title");
+// const cardUrlInput = document.querySelector("#modal-description");
 
 initialCards.forEach((cardData) => {
   const cardElement = createCard(cardData);
   cardListEl.prepend(cardElement);
-});
+ });
 
+section.renderItems();
+
+popupWithImage.setEventListeners();
