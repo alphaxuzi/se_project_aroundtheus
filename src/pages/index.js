@@ -5,7 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import { initialCards } from "../utils/constants.js";
-import { config } from "../utils/constants.js"
+import { config } from "../utils/constants.js";
 import Section from "../components/Section.js";
 
 function createCard(cardData) {
@@ -20,14 +20,18 @@ function handleImageClick(cardData) {
 
 const cardListEl = document.querySelector(".cards__list");
 
-const section = new Section({
-  items: initialCards,
-  renderer: (cardData) => {
-    const cardElement = createCard(cardData);
-    cardListEl.prepend(cardElement); 
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const cardElement = createCard(cardData);
+      cardListEl.prepend(cardElement);
+    },
   },
-}, ".cards__list");
+  ".cards__list"
+);
 
+section.renderItems();
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
@@ -56,11 +60,10 @@ popupAddPlace.setEventListeners();
 
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
-  const {name, job} = userInfo.getUserInfo()
+  const { name, job } = userInfo.getUserInfo();
   modalTitleInput.textContent = name;
   modalDescriptionInput.textContent = job;
   popupProfileEdit.open();
-
 });
 
 function handleProfileFormSubmit({ title, description }) {
@@ -87,7 +90,6 @@ function handleAddPlaceFormSubmit(data) {
   popupAddPlace.close();
   popupAddPlace.resetForm();
   validateAddPlace.toggleButtonState();
-  
 }
 
 //initialization
@@ -104,9 +106,9 @@ const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
 // const cardUrlInput = document.querySelector("#modal-description");
 
 //  initialCards.forEach((cardData) => {
- // const cardElement = createCard(cardData);
- // cardListEl.prepend(cardElement);
- // }); 
+// const cardElement = createCard(cardData);
+// cardListEl.prepend(cardElement);
+// });
 
 // section.renderItems();
 
