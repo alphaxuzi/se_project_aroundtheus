@@ -25,7 +25,7 @@ const section = new Section(
     items: initialCards,
     renderer: (cardData) => {
       const cardElement = createCard(cardData);
-      cardListEl.prepend(cardElement);
+      section.addItem(cardElement);
     },
   },
   ".cards__list"
@@ -61,8 +61,8 @@ popupAddPlace.setEventListeners();
 // Event Listeners for Profile Editing
 profileEditButton.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();
-  modalTitleInput.textContent = name;
-  modalDescriptionInput.textContent = job;
+  modalTitleInput.value = name;
+  modalDescriptionInput.value = job;
   popupProfileEdit.open();
 });
 
