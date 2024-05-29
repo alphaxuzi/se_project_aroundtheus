@@ -22,11 +22,16 @@
       </header>
       <main class="content">
         <section class="profile">
+          <div class="profile__image_container">
           <img
             class="profile__image"
             src="<%=require('./images/Avatar.png')%>"
             alt="profile-photo"
           />
+          <img class="profile__image_edit-icon" 
+          src="<%=require('./images/update-Avatar.svg')%>"
+          alt="avatar-edit-icon"/>
+        </div>
           <div class="profile__info">
             <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
@@ -90,7 +95,7 @@
             <input
               class="modal__input"
               type="text"
-              name="title"
+              name="name"
               id="modal-title"
               placeholder="Title"
               required
@@ -121,6 +126,36 @@
         ></button>
         <img class="modal__image" src="" />
         <p class="modal__description"></p>
+      </div>
+    </div>
+
+    <div class="modal" id="update-avatar">
+      <div class="modal__container">
+        <button class="modal__exit-button" id="exit-button"></button>
+        <h1 class="modal__header">Change profile picture</h1>
+        <form class="modal__form" id="update-avatar-form">
+          <label class="modal__label">
+            <input
+              class="modal__input"
+              type="url"
+              name="link"
+              id="modal-avatar"
+              placeholder="Image URL"
+              required
+            />
+            <span class="modal__error" id="modal-description-error"></span>
+          </label>
+          <button type="submit" class="modal__save-button">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="confirm-modal">
+      <div class="modal__container">
+        <button class="modal__exit-button" id="exit-button"></button>
+        <h1 class="modal__header">Are you sure?</h1>
+          <button type="submit" class="modal__save-button">Yes</button>
+        </form>
       </div>
     </div>
 

@@ -7,6 +7,17 @@ import UserInfo from "../components/UserInfo.js";
 import { initialCards } from "../utils/constants.js";
 import { config } from "../utils/constants.js";
 import Section from "../components/Section.js";
+import Api from "../components/Api.js";
+
+let section;
+
+export const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "953ea6cd-2c01-4d7b-be00-e077aa224921",
+    "Content-Type": "application/json",
+  },
+});
 
 function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
@@ -18,25 +29,40 @@ function handleImageClick(cardData) {
   popupWithImage.open(cardData);
 }
 
-const section = new Section(
-  {
-    items: initialCards,
-    renderer: (cardData) => {
-      const cardElement = createCard(cardData);
-      section.addItem(cardElement);
-    },
-  },
-  ".cards__list"
-);
-
-section.renderItems();
+api
+  .getInitialCards()
+  .then((cards) => {
+    section = new Section(
+      {
+        items: cards,
+        renderer: (cardData) => {
+          const cardElement = createCard(cardData);
+          section.addItem(cardElement);
+        },
+      },
+      ".cards__list"
+    );
+    section.renderItems();
+  })
+  .catch((err) => {
+    console.error(err);
+    // alert(`${err}, something went wrong`);
+  });
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
 });
 
-userInfo.setUserInfo({ name: "Name", job: "Job" });
+api
+  .loadUserInfo()
+  .then((data) => {
+    userInfo.setUserInfo({ name: data.name, job: data.about });
+  })
+  .catch((err) => {
+    console.error(err);
+    // alert(`${err}, something went wrong`);
+  });
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -55,6 +81,7 @@ const popupAddPlace = new PopupWithForm("#add-place", handleAddPlaceFormSubmit);
 popupAddPlace.setEventListeners();
 
 // Event Listeners for Profile Editing
+
 profileEditButton.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();
   modalTitleInput.value = name;
@@ -63,9 +90,17 @@ profileEditButton.addEventListener("click", () => {
 });
 
 function handleProfileFormSubmit({ title, description }) {
-  userInfo.setUserInfo({ name: title, job: description });
-  popupProfileEdit.close();
-  validateProfile.toggleButtonState();
+  api
+    .updateUserInfo(title, description)
+    .then(() => {
+      userInfo.setUserInfo({ name: title, job: description });
+      popupProfileEdit.close();
+      validateProfile.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+      // alert(`${err}, something went wrong`);
+    });
 }
 
 // Add Place Section
@@ -77,14 +112,17 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
-  const { title, link } = data;
-  const cardData = { name: title, link: link };
-  const cardElement = createCard(cardData);
-
-  section.addItem(cardElement);
-  popupAddPlace.close();
-  popupAddPlace.resetForm();
-  validateAddPlace.toggleButtonState();
+  const { name, link } = data;
+  api.addCard(name, link).then((cardData) => {
+    const cardElement = createCard(cardData);
+    section.addItem(cardElement);
+    popupAddPlace.close();
+    popupAddPlace.resetForm();
+    validateAddPlace.toggleButtonState();
+  }).catch((err) => {
+    console.error(err);
+    // alert(`${err}, something went wrong`);
+  })
 }
 
 //initialization
@@ -95,5 +133,4 @@ const validateAddPlace = new FormValidator(config, addPlaceForm);
 validateAddPlace.enableValidation();
 
 const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
-
 popupWithImage.setEventListeners();

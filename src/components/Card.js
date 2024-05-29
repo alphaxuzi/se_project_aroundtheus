@@ -1,3 +1,5 @@
+import { api } from "../pages/index.js";
+
 export default class Card {
   constructor(cardData, cardSelector, handleImageClick) {
     this._cardData = cardData;
@@ -10,7 +12,7 @@ export default class Card {
     const deleteButton = this._cardElement.querySelector(
       ".card__delete-button"
     );
-   const cardImageEl = this._cardElement.querySelector(".card__image");
+    const cardImageEl = this._cardElement.querySelector(".card__image");
 
     likeButton.addEventListener("click", () => {
       this._handleLikeIcon();
@@ -26,13 +28,41 @@ export default class Card {
   }
 
   _handleLikeIcon() {
-    this._cardElement
-      .querySelector(".card__like-button")
-      .classList.toggle("card__like-button_active");
+    const cardId = this._cardData._id;
+    const likeButton = this._cardElement.querySelector(".card__like-button");
+
+    if (likeButton.classList.contains("card__like-button_active")) {
+      api
+        .dislikeCard(cardId)
+        .then(() => {
+          likeButton.classList.remove("card__like-button_active");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      api
+        .likeCard(cardId)
+        .then(() => {
+          likeButton.classList.add("card__like-button_active");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   _handleDeleteCard() {
-    this._cardElement.remove();
+    const cardId = this._cardData._id;
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        this._cardElement.remove();
+      })
+      .catch((err) => {
+        console.error(err);
+        // alert(`${err}, something went wrong`);
+      });
   }
 
   getCardView() {
