@@ -1,4 +1,5 @@
 import { api } from "../pages/index.js";
+import { popupConfirmDeleteCard } from "../pages/index.js";
 
 export default class Card {
   constructor(cardData, cardSelector, handleImageClick) {
@@ -19,7 +20,17 @@ export default class Card {
     });
 
     deleteButton.addEventListener("click", () => {
-      this._handleDeleteCard();
+      popupConfirmDeleteCard.open();
+      const popupConfirmButton = document.querySelector("#confirm-delete-button");
+      const handleConfirmDelete = () => {
+        this._handleDeleteCard();
+        popupConfirmButton.removeEventListener(
+          "click",
+          this.handleConfirmDelete
+        );
+        popupConfirmDeleteCard.close();
+      };
+      popupConfirmButton.addEventListener("click", handleConfirmDelete);
     });
 
     cardImageEl.addEventListener("click", () => {
@@ -30,8 +41,9 @@ export default class Card {
   _handleLikeIcon() {
     const cardId = this._cardData._id;
     const likeButton = this._cardElement.querySelector(".card__like-button");
+    const isLiked = likeButton.classList.contains("card__like-button_active");
 
-    if (likeButton.classList.contains("card__like-button_active")) {
+    if (cardId.isLiked) {
       api
         .dislikeCard(cardId)
         .then(() => {

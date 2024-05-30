@@ -33,6 +33,7 @@
   height: 26px; 
   opacity: 0;
   transition: opacity 0.3s ease;
+  cursor: pointer;
 }
 
 .profile__image_container:hover .profile__image {

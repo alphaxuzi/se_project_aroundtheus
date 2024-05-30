@@ -8,6 +8,7 @@ import { initialCards } from "../utils/constants.js";
 import { config } from "../utils/constants.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
+import Popup from "../components/Popup.js";
 
 let section;
 
@@ -52,12 +53,17 @@ api
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
 
 api
   .loadUserInfo()
   .then((data) => {
-    userInfo.setUserInfo({ name: data.name, job: data.about });
+    userInfo.setUserInfo({
+      name: data.name,
+      job: data.about,
+      avatar: data.avatar,
+    });
   })
   .catch((err) => {
     console.error(err);
@@ -90,6 +96,11 @@ profileEditButton.addEventListener("click", () => {
 });
 
 function handleProfileFormSubmit({ title, description }) {
+  const saveButton = document.querySelector("#profile-submit-button");
+  const originalText = saveButton.textContent;
+
+  saveButton.textContent = "Saving...";
+
   api
     .updateUserInfo(title, description)
     .then(() => {
@@ -100,6 +111,9 @@ function handleProfileFormSubmit({ title, description }) {
     .catch((err) => {
       console.error(err);
       // alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      saveButton.textContent = originalText;
     });
 }
 
@@ -112,17 +126,26 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
+  const saveButton = document.querySelector("#card-submit-button");
+  const originalText = saveButton.textContent;
+
+  saveButton.textContent = "Saving...";
   const { name, link } = data;
-  api.addCard(name, link).then((cardData) => {
-    const cardElement = createCard(cardData);
-    section.addItem(cardElement);
-    popupAddPlace.close();
-    popupAddPlace.resetForm();
-    validateAddPlace.toggleButtonState();
-  }).catch((err) => {
-    console.error(err);
-    // alert(`${err}, something went wrong`);
-  })
+  api
+    .addCard(name, link)
+    .then((cardData) => {
+      const cardElement = createCard(cardData);
+      section.addItem(cardElement);
+      popupAddPlace.close();
+      popupAddPlace.resetForm();
+      validateAddPlace.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+      // alert(`${err}, something went wrong`);
+    }).finally(()=>{
+      saveButton.textContent = originalText;
+    });
 }
 
 //initialization
@@ -134,3 +157,47 @@ validateAddPlace.enableValidation();
 
 const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
 popupWithImage.setEventListeners();
+
+// Avatar
+const updateAvatarModal = document.querySelector("#update-avatar");
+const avatarForm = updateAvatarModal.querySelector(".modal__form");
+const updateAvatarButton = document.querySelector(".profile__image_edit-icon");
+
+const validateUpdateAvatar = new FormValidator(config, avatarForm);
+
+const popupUpdateAvatar = new PopupWithForm(
+  "#update-avatar",
+  handleUpdateAvatar
+);
+popupUpdateAvatar.setEventListeners();
+
+function handleUpdateAvatar({ link }) {
+  const saveButton = document.querySelector("#avatar-submit-button");
+  const originalText = saveButton.textContent;
+
+  saveButton.textContent = "Saving...";
+  api
+    .updateAvatar(link)
+    .then((data) => {
+      userInfo.setUserInfo({ avatar: data.avatar });
+      popupUpdateAvatar.close();
+      avatarForm.reset();
+      validateUpdateAvatar.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+    }).finally(()=> {
+      saveButton.textContent = originalText;
+    });
+}
+
+updateAvatarButton.addEventListener("click", () => {
+  popupUpdateAvatar.open();
+  validateUpdateAvatar.enableValidation();
+});
+
+// COnfirm delete Card
+export const popupConfirmDeleteCard = new Popup({
+  popupSelector: "#confirm-modal",
+});
+popupConfirmDeleteCard.setEventListeners();
