@@ -2,12 +2,14 @@ import { api } from "../pages/index.js";
 import { popupConfirmDeleteCard } from "../pages/index.js";
 
 export default class Card {
-  constructor(cardData, cardSelector, handleImageClick) {
+  constructor(cardData, cardSelector, handleImageClick, setIsLiked) {
     this._cardData = cardData;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
-    this._isLiked = cardData.isLiked || false;
+    this._isLiked = cardData.isLiked;
+    this._setIsLiked = setIsLiked;
   }
+
 
   _setEventListeners() {
     const likeButton = this._cardElement.querySelector(".card__like-button");
@@ -17,7 +19,7 @@ export default class Card {
     const cardImageEl = this._cardElement.querySelector(".card__image");
 
     likeButton.addEventListener("click", () => {
-      this.setIsLiked(!this.isLiked());
+      this.setIsLiked(this);
     });
 
     deleteButton.addEventListener("click", () => {
@@ -42,11 +44,11 @@ export default class Card {
   }
 
   _handleDeleteCard() {
-        this._cardElement.remove();
+    this._cardElement.remove();
   }
 
   setIsLiked(isLiked) {
-    this._isLiked = isLiked;
+    this._isLiked = !isLiked;
     this._renderLikes();
   }
 
@@ -63,8 +65,6 @@ export default class Card {
     }
   }
 
-
-
   getCardView() {
     this._cardElement = document
       .querySelector(this._cardSelector)
@@ -78,9 +78,8 @@ export default class Card {
     cardImageEl.setAttribute("src", this._cardData.link);
     cardImageEl.setAttribute("alt", `Photo of ${this._cardData.name}`);
     cardTitleEl.textContent = this._cardData.name;
-    
-    this._setEventListeners();
 
+    this._setEventListeners();
     this._renderLikes();
 
     return this._cardElement;

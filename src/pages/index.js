@@ -9,6 +9,7 @@ import { config } from "../utils/constants.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
 import Popup from "../components/Popup.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 let section;
 
@@ -21,12 +22,22 @@ export const api = new Api({
 });
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const card = new Card(cardData, "#card-template", handleImageClick, setIsLiked );
   const cardElement = card.getCardView();
+
   return cardElement;
 }
 
+function setIsLiked () {
+  const card = new Card(cardData, "#card-template", handleImageClick, );
+  const cardId = cardData._id;
 
+  if (card.isLiked()) {
+    api.dislikeCard(cardId).then((res) => card.setIsLiked(res));
+  } else {
+    api.likeCard(cardId).then((res) => card.setIsLiked(res));
+  }
+}
 
 function handleImageClick(cardData) {
   popupWithImage.open(cardData);
@@ -166,6 +177,7 @@ const avatarForm = updateAvatarModal.querySelector(".modal__form");
 const updateAvatarButton = document.querySelector(".profile__image_edit-icon");
 
 const validateUpdateAvatar = new FormValidator(config, avatarForm);
+validateUpdateAvatar.enableValidation();
 
 const popupUpdateAvatar = new PopupWithForm(
   "#update-avatar",
@@ -196,11 +208,21 @@ function handleUpdateAvatar({ link }) {
 
 updateAvatarButton.addEventListener("click", () => {
   popupUpdateAvatar.open();
-  validateUpdateAvatar.enableValidation();
 });
 
 // Confirm delete Card
-export const popupConfirmDeleteCard = new Popup({
-  popupSelector: "#confirm-modal",
-});
-popupConfirmDeleteCard.setEventListeners();
+export const popupConfirmDeleteCard = new PopupWithConfirmation(
+ "#confirm-modal",
+  handleDelete
+);
+// popupConfirmDeleteCard.setEventListeners();
+
+function handleDelete() {
+  api.deleteCard().then(() => {
+    const card = new Card(cardData, "#card-template", handleImageClick);
+      card._handleDeleteCard(cardData);
+    }).catch((err) => {
+      console.error(err);
+      // alert(`${err}, something went wrong`);
+    })
+  }

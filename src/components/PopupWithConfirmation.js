@@ -1,20 +1,10 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithConfirmation extends Popup {
-  constructor({ popupSelector }) {
+  constructor({ popupSelector, handleDelete }) {
     super({ popupSelector });
-    this._popupSelector = document.querySelector('#confirm-modal')
+    this._handleDelete = handleDelete;
   }
+
 }
 
-
-const cardId = this._cardData._id;
-    api
-      .deleteCard(cardId)
-      .then(() => {
-        this._cardElement.remove();
-      })
-      .catch((err) => {
-        console.error(err);
-        // alert(`${err}, something went wrong`);
-      });
