@@ -14,11 +14,7 @@ export default class Api {
   loadUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    })
-      .then(this._handleResponse)
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then(this._handleResponse);
   }
 
   getInitialCards() {
@@ -49,40 +45,28 @@ export default class Api {
         name: name,
         link: link,
       }),
-    })
-      .then(this._handleResponse)
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then(this._handleResponse);
   }
 
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
-    })
-      .then(this._handleResponse)
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then(this._handleResponse);
   }
 
   likeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._headers,
-    })
-      .then(this._handleResponse)
-      .catch((err) => console.error(err));
+    }).then(this._handleResponse);
   }
 
   dislikeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._headers,
-    })
-      .then(this._handleResponse)
-      .catch((err) => console.error(err));
+    }).then(this._handleResponse);
   }
 
   updateAvatar(link) {
@@ -92,10 +76,6 @@ export default class Api {
       body: JSON.stringify({
         avatar: link,
       }),
-    })
-      .then(this._handleResponse)
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then(this._handleResponse);
   }
 }

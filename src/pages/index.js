@@ -26,6 +26,8 @@ function createCard(cardData) {
   return cardElement;
 }
 
+
+
 function handleImageClick(cardData) {
   popupWithImage.open(cardData);
 }
@@ -62,7 +64,6 @@ api
     userInfo.setUserInfo({
       name: data.name,
       job: data.about,
-      avatar: data.avatar,
     });
   })
   .catch((err) => {
@@ -143,7 +144,8 @@ function handleAddPlaceFormSubmit(data) {
     .catch((err) => {
       console.error(err);
       // alert(`${err}, something went wrong`);
-    }).finally(()=>{
+    })
+    .finally(() => {
       saveButton.textContent = originalText;
     });
 }
@@ -179,14 +181,15 @@ function handleUpdateAvatar({ link }) {
   api
     .updateAvatar(link)
     .then((data) => {
-      userInfo.setUserInfo({ avatar: data.avatar });
+      userInfo.setAvatar(data.avatar);
       popupUpdateAvatar.close();
       avatarForm.reset();
       validateUpdateAvatar.toggleButtonState();
     })
     .catch((err) => {
       console.error(err);
-    }).finally(()=> {
+    })
+    .finally(() => {
       saveButton.textContent = originalText;
     });
 }
@@ -196,7 +199,7 @@ updateAvatarButton.addEventListener("click", () => {
   validateUpdateAvatar.enableValidation();
 });
 
-// COnfirm delete Card
+// Confirm delete Card
 export const popupConfirmDeleteCard = new Popup({
   popupSelector: "#confirm-modal",
 });
