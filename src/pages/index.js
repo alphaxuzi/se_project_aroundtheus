@@ -50,14 +50,13 @@ function handleImageClick(cardData) {
   popupWithImage.open(cardData);
 }
 
-
 function handleDelete(card) {
   popupConfirmDeleteCard.open();
-  const confirmButton = document.querySelector(".confirm-delete-button");
+  const confirmButton = document.querySelector("#confirm-delete-button");
   confirmButton.addEventListener("click", () => {
     api
       .deleteCard(card.id)
-      .then((card) => {
+      .then(() => {
         card._handleDeleteCard();
         popupConfirmDeleteCard.close();
       })
@@ -68,9 +67,19 @@ function handleDelete(card) {
   });
 }
 
-api
-  .getInitialCards()
-  .then((cards) => {
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
+});
+
+Promise.all([api.loadUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+    });
+    userInfo.setAvatar(userData.avatar);
     section = new Section(
       {
         items: cards,
@@ -82,25 +91,6 @@ api
       ".cards__list"
     );
     section.renderItems();
-  })
-  .catch((err) => {
-    console.error(err);
-    // alert(`${err}, something went wrong`);
-  });
-
-const userInfo = new UserInfo({
-  nameSelector: ".profile__title",
-  jobSelector: ".profile__description",
-  avatarSelector: ".profile__image",
-});
-
-api
-  .loadUserInfo()
-  .then((data) => {
-    userInfo.setUserInfo({
-      name: data.name,
-      job: data.about,
-    });
   })
   .catch((err) => {
     console.error(err);
@@ -133,12 +123,7 @@ profileEditButton.addEventListener("click", () => {
 });
 
 function handleProfileFormSubmit({ title, description }) {
-  const saveButton = document.querySelector("#profile-submit-button");
-  const originalText = saveButton.textContent;
-
-  saveButton.textContent = "Saving...";
-
-  api
+  return api
     .updateUserInfo(title, description)
     .then(() => {
       userInfo.setUserInfo({ name: title, job: description });
@@ -148,9 +133,6 @@ function handleProfileFormSubmit({ title, description }) {
     .catch((err) => {
       console.error(err);
       // alert(`${err}, something went wrong`);
-    })
-    .finally(() => {
-      saveButton.textContent = originalText;
     });
 }
 
@@ -163,15 +145,10 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
-  const saveButton = document.querySelector("#card-submit-button");
-  const originalText = saveButton.textContent;
-
-  saveButton.textContent = "Saving...";
   const { name, link } = data;
-  api
+  return api
     .addCard(name, link)
     .then((cardData) => {
-      console.log(cardData);
       const cardElement = createCard(cardData);
       section.addItem(cardElement);
       popupAddPlace.close();
@@ -181,9 +158,6 @@ function handleAddPlaceFormSubmit(data) {
     .catch((err) => {
       console.error(err);
       // alert(`${err}, something went wrong`);
-    })
-    .finally(() => {
-      saveButton.textContent = originalText;
     });
 }
 
@@ -212,11 +186,7 @@ const popupUpdateAvatar = new PopupWithForm(
 popupUpdateAvatar.setEventListeners();
 
 function handleUpdateAvatar({ link }) {
-  const saveButton = document.querySelector("#avatar-submit-button");
-  const originalText = saveButton.textContent;
-
-  saveButton.textContent = "Saving...";
-  api
+  return api
     .updateAvatar(link)
     .then((data) => {
       userInfo.setAvatar(data.avatar);
@@ -226,9 +196,6 @@ function handleUpdateAvatar({ link }) {
     })
     .catch((err) => {
       console.error(err);
-    })
-    .finally(() => {
-      saveButton.textContent = originalText;
     });
 }
 

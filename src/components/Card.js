@@ -1,16 +1,19 @@
-import { api } from "../pages/index.js";
-import { popupConfirmDeleteCard } from "../pages/index.js";
-
 export default class Card {
-  constructor(cardData, cardSelector, handleImageClick, setIsLiked, handleDelete) {
+  constructor(
+    cardData,
+    cardSelector,
+    handleImageClick,
+    setIsLiked,
+    handleDelete
+  ) {
     this._cardData = cardData;
-    this.id = cardData._id;    this._cardSelector = cardSelector;
+    this.id = cardData._id;
+    this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._isLiked = cardData.isLiked;
     this._setIsLiked = setIsLiked;
     this._handleDelete = handleDelete;
   }
-
 
   _setEventListeners() {
     const likeButton = this._cardElement.querySelector(".card__like-button");
@@ -24,7 +27,7 @@ export default class Card {
     });
 
     deleteButton.addEventListener("click", () => {
-      this._handleDelete(this)
+      this._handleDelete(this);
     });
 
     cardImageEl.addEventListener("click", () => {
