@@ -2,12 +2,13 @@ import { api } from "../pages/index.js";
 import { popupConfirmDeleteCard } from "../pages/index.js";
 
 export default class Card {
-  constructor(cardData, cardSelector, handleImageClick, setIsLiked) {
+  constructor(cardData, cardSelector, handleImageClick, setIsLiked, handleDelete) {
     this._cardData = cardData;
-    this._cardSelector = cardSelector;
+    this.id = cardData._id;    this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._isLiked = cardData.isLiked;
     this._setIsLiked = setIsLiked;
+    this._handleDelete = handleDelete;
   }
 
 
@@ -19,23 +20,11 @@ export default class Card {
     const cardImageEl = this._cardElement.querySelector(".card__image");
 
     likeButton.addEventListener("click", () => {
-      this.setIsLiked(this);
+      this._setIsLiked(this);
     });
 
     deleteButton.addEventListener("click", () => {
-      popupConfirmDeleteCard.open();
-      const popupConfirmButton = document.querySelector(
-        "#confirm-delete-button"
-      );
-      const handleConfirmDelete = () => {
-        this._handleDeleteCard();
-        popupConfirmButton.removeEventListener(
-          "click",
-          this.handleConfirmDelete
-        );
-        popupConfirmDeleteCard.close();
-      };
-      popupConfirmButton.addEventListener("click", handleConfirmDelete);
+      this._handleDelete(this)
     });
 
     cardImageEl.addEventListener("click", () => {
@@ -45,10 +34,11 @@ export default class Card {
 
   _handleDeleteCard() {
     this._cardElement.remove();
+    this._cardElement = null;
   }
 
   setIsLiked(isLiked) {
-    this._isLiked = !isLiked;
+    this._isLiked = isLiked;
     this._renderLikes();
   }
 

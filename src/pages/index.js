@@ -22,25 +22,50 @@ export const api = new Api({
 });
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick, setIsLiked );
+  const card = new Card(
+    cardData,
+    "#card-template",
+    handleImageClick,
+    setIsLiked,
+    handleDelete
+  );
   const cardElement = card.getCardView();
 
   return cardElement;
 }
 
-function setIsLiked () {
-  const card = new Card(cardData, "#card-template", handleImageClick, );
-  const cardId = cardData._id;
+function setIsLiked(card) {
+  const cardId = card._cardData._id;
 
   if (card.isLiked()) {
-    api.dislikeCard(cardId).then((res) => card.setIsLiked(res));
+    api.dislikeCard(cardId).then((res) => {
+      card.setIsLiked(false);
+    });
   } else {
-    api.likeCard(cardId).then((res) => card.setIsLiked(res));
+    api.likeCard(cardId).then((res) => card.setIsLiked(true));
   }
 }
 
 function handleImageClick(cardData) {
   popupWithImage.open(cardData);
+}
+
+
+function handleDelete(card) {
+  popupConfirmDeleteCard.open();
+  const confirmButton = document.querySelector(".confirm-delete-button");
+  confirmButton.addEventListener("click", () => {
+    api
+      .deleteCard(card.id)
+      .then((card) => {
+        card._handleDeleteCard();
+        popupConfirmDeleteCard.close();
+      })
+      .catch((err) => {
+        console.error(err);
+        // alert(`${err}, something went wrong`);
+      });
+  });
 }
 
 api
@@ -146,6 +171,7 @@ function handleAddPlaceFormSubmit(data) {
   api
     .addCard(name, link)
     .then((cardData) => {
+      console.log(cardData);
       const cardElement = createCard(cardData);
       section.addItem(cardElement);
       popupAddPlace.close();
@@ -212,17 +238,7 @@ updateAvatarButton.addEventListener("click", () => {
 
 // Confirm delete Card
 export const popupConfirmDeleteCard = new PopupWithConfirmation(
- "#confirm-modal",
-  handleDelete
+  "#confirm-modal",
+  (card) => handleDelete(card)
 );
-// popupConfirmDeleteCard.setEventListeners();
-
-function handleDelete() {
-  api.deleteCard().then(() => {
-    const card = new Card(cardData, "#card-template", handleImageClick);
-      card._handleDeleteCard(cardData);
-    }).catch((err) => {
-      console.error(err);
-      // alert(`${err}, something went wrong`);
-    })
-  }
+popupConfirmDeleteCard.setEventListeners();
