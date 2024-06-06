@@ -35,23 +35,22 @@ function createCard(cardData) {
 }
 
 function setIsLiked(card) {
-  const cardId = card._cardData._id;
-
   if (card.isLiked()) {
-    api.dislikeCard(cardId).then((res) => {
-      card.setIsLiked(false).catch((err) => {
-        console.error(err);
-        alert(`${err}, something went wrong`);
-      });
+    api.dislikeCard(card.getCardId()).then((res) => {
+      card.setIsLiked(false),
+        (err) => {
+          console.error(err);
+          alert(`${err}, something went wrong`);
+        };
     });
   } else {
-    api
-      .likeCard(cardId)
-      .then((res) => card.setIsLiked(true))
-      .catch((err) => {
+    api.likeCard(card.getCardId()).then(
+      (res) => card.setIsLiked(true),
+      (err) => {
         console.error(err);
         alert(`${err}, something went wrong`);
-      });
+      }
+    );
   }
 }
 
@@ -219,9 +218,10 @@ popupConfirmDeleteCard.setEventListeners();
 function handleDelete(card) {
   popupConfirmDeleteCard.open(() => {
     popupConfirmDeleteCard.showLoading();
-    api.deleteCard(card._cardData._id)
+    api
+      .deleteCard(card.getCardId())
       .then(() => {
-        card._handleDeleteCard();
+        card.deleteCard();
         popupConfirmDeleteCard.close();
       })
       .catch((err) => {

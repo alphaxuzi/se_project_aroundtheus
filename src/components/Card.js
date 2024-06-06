@@ -35,7 +35,7 @@ export default class Card {
     });
   }
 
-  _handleDeleteCard() {
+  deleteCard() {
     this._cardElement.remove();
     this._cardElement = null;
   }
@@ -76,5 +76,9 @@ export default class Card {
     this._renderLikes();
 
     return this._cardElement;
+  }
+
+  getCardId() {
+    return this._cardData._id;
   }
 }
