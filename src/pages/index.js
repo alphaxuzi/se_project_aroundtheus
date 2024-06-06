@@ -39,32 +39,24 @@ function setIsLiked(card) {
 
   if (card.isLiked()) {
     api.dislikeCard(cardId).then((res) => {
-      card.setIsLiked(false);
+      card.setIsLiked(false).catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      });
     });
   } else {
-    api.likeCard(cardId).then((res) => card.setIsLiked(true));
+    api
+      .likeCard(cardId)
+      .then((res) => card.setIsLiked(true))
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      });
   }
 }
 
 function handleImageClick(cardData) {
   popupWithImage.open(cardData);
-}
-
-function handleDelete(card) {
-  popupConfirmDeleteCard.open();
-  const confirmButton = document.querySelector("#confirm-delete-button");
-  confirmButton.addEventListener("click", () => {
-    api
-      .deleteCard(card.id)
-      .then(() => {
-        card._handleDeleteCard();
-        popupConfirmDeleteCard.close();
-      })
-      .catch((err) => {
-        console.error(err);
-        // alert(`${err}, something went wrong`);
-      });
-  });
 }
 
 const userInfo = new UserInfo({
@@ -94,7 +86,7 @@ Promise.all([api.loadUserInfo(), api.getInitialCards()])
   })
   .catch((err) => {
     console.error(err);
-    // alert(`${err}, something went wrong`);
+    alert(`${err}, something went wrong`);
   });
 
 // Profile Section
@@ -123,16 +115,21 @@ profileEditButton.addEventListener("click", () => {
 });
 
 function handleProfileFormSubmit({ title, description }) {
+  popupProfileEdit.showLoading();
   return api
     .updateUserInfo(title, description)
     .then(() => {
+      popupProfileEdit.showLoading();
       userInfo.setUserInfo({ name: title, job: description });
       popupProfileEdit.close();
       validateProfile.toggleButtonState();
     })
     .catch((err) => {
       console.error(err);
-      // alert(`${err}, something went wrong`);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupProfileEdit.hideLoading();
     });
 }
 
@@ -145,6 +142,7 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
+  popupAddPlace.showLoading();
   const { name, link } = data;
   return api
     .addCard(name, link)
@@ -157,7 +155,10 @@ function handleAddPlaceFormSubmit(data) {
     })
     .catch((err) => {
       console.error(err);
-      // alert(`${err}, something went wrong`);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupAddPlace.hideLoading();
     });
 }
 
@@ -186,6 +187,7 @@ const popupUpdateAvatar = new PopupWithForm(
 popupUpdateAvatar.setEventListeners();
 
 function handleUpdateAvatar({ link }) {
+  popupUpdateAvatar.showLoading();
   return api
     .updateAvatar(link)
     .then((data) => {
@@ -196,6 +198,10 @@ function handleUpdateAvatar({ link }) {
     })
     .catch((err) => {
       console.error(err);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupUpdateAvatar.hideLoading();
     });
 }
 
@@ -209,3 +215,21 @@ export const popupConfirmDeleteCard = new PopupWithConfirmation(
   (card) => handleDelete(card)
 );
 popupConfirmDeleteCard.setEventListeners();
+
+function handleDelete(card) {
+  popupConfirmDeleteCard.open(() => {
+    popupConfirmDeleteCard.showLoading();
+    api.deleteCard(card._cardData._id)
+      .then(() => {
+        card._handleDeleteCard();
+        popupConfirmDeleteCard.close();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      })
+      .finally(() => {
+        popupConfirmDeleteCard.hideLoading();
+      });
+  });
+}
