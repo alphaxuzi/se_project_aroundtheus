@@ -37,20 +37,19 @@ function createCard(cardData) {
 function setIsLiked(card) {
   if (card.isLiked()) {
     api.dislikeCard(card.getCardId()).then((res) => {
-      card.setIsLiked(false),
-        (err) => {
-          console.error(err);
-          alert(`${err}, something went wrong`);
-        };
-    });
-  } else {
-    api.likeCard(card.getCardId()).then(
-      (res) => card.setIsLiked(true),
-      (err) => {
+      card.setIsLiked(false).catch((err) => {
         console.error(err);
         alert(`${err}, something went wrong`);
-      }
-    );
+      });
+    });
+  } else {
+    api
+      .likeCard(card.getCardId())
+      .then((res) => card.setIsLiked(true))
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      });
   }
 }
 
