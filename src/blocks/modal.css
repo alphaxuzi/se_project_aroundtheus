@@ -196,3 +196,7 @@
     margin-top: 60px;
   }
 }
+
+.modal__save-button:last-of-type {
+  width: 358px;
+}

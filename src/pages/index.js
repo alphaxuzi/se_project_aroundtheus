@@ -7,36 +7,88 @@ import UserInfo from "../components/UserInfo.js";
 import { initialCards } from "../utils/constants.js";
 import { config } from "../utils/constants.js";
 import Section from "../components/Section.js";
+import Api from "../components/Api.js";
+import Popup from "../components/Popup.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
+
+let section;
+
+export const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "953ea6cd-2c01-4d7b-be00-e077aa224921",
+    "Content-Type": "application/json",
+  },
+});
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const card = new Card(
+    cardData,
+    "#card-template",
+    handleImageClick,
+    setIsLiked,
+    handleDelete
+  );
   const cardElement = card.getCardView();
+
   return cardElement;
+}
+
+function setIsLiked(card) {
+  if (card.isLiked()) {
+    api
+      .dislikeCard(card.getCardId())
+      .then((res) => {
+        card.setIsLiked(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      });
+  } else {
+    api
+      .likeCard(card.getCardId())
+      .then((res) => card.setIsLiked(true))
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      });
+  }
 }
 
 function handleImageClick(cardData) {
   popupWithImage.open(cardData);
 }
 
-const section = new Section(
-  {
-    items: initialCards,
-    renderer: (cardData) => {
-      const cardElement = createCard(cardData);
-      section.addItem(cardElement);
-    },
-  },
-  ".cards__list"
-);
-
-section.renderItems();
-
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
 
-userInfo.setUserInfo({ name: "Name", job: "Job" });
+Promise.all([api.loadUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+    });
+    userInfo.setAvatar(userData.avatar);
+    section = new Section(
+      {
+        items: cards,
+        renderer: (cardData) => {
+          const cardElement = createCard(cardData);
+          section.addItem(cardElement);
+        },
+      },
+      ".cards__list"
+    );
+    section.renderItems();
+  })
+  .catch((err) => {
+    console.error(err);
+    alert(`${err}, something went wrong`);
+  });
 
 // Profile Section
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -55,6 +107,7 @@ const popupAddPlace = new PopupWithForm("#add-place", handleAddPlaceFormSubmit);
 popupAddPlace.setEventListeners();
 
 // Event Listeners for Profile Editing
+
 profileEditButton.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();
   modalTitleInput.value = name;
@@ -63,9 +116,22 @@ profileEditButton.addEventListener("click", () => {
 });
 
 function handleProfileFormSubmit({ title, description }) {
-  userInfo.setUserInfo({ name: title, job: description });
-  popupProfileEdit.close();
-  validateProfile.toggleButtonState();
+  popupProfileEdit.showLoading();
+  return api
+    .updateUserInfo(title, description)
+    .then(() => {
+      popupProfileEdit.showLoading();
+      userInfo.setUserInfo({ name: title, job: description });
+      popupProfileEdit.close();
+      validateProfile.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupProfileEdit.hideLoading();
+    });
 }
 
 // Add Place Section
@@ -77,14 +143,24 @@ addCardButton.addEventListener("click", () => {
 });
 
 function handleAddPlaceFormSubmit(data) {
-  const { title, link } = data;
-  const cardData = { name: title, link: link };
-  const cardElement = createCard(cardData);
-
-  section.addItem(cardElement);
-  popupAddPlace.close();
-  popupAddPlace.resetForm();
-  validateAddPlace.toggleButtonState();
+  popupAddPlace.showLoading();
+  const { name, link } = data;
+  return api
+    .addCard(name, link)
+    .then((cardData) => {
+      const cardElement = createCard(cardData);
+      section.addItem(cardElement);
+      popupAddPlace.close();
+      popupAddPlace.resetForm();
+      validateAddPlace.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupAddPlace.hideLoading();
+    });
 }
 
 //initialization
@@ -95,5 +171,67 @@ const validateAddPlace = new FormValidator(config, addPlaceForm);
 validateAddPlace.enableValidation();
 
 const popupWithImage = new PopupWithImage({ popupSelector: "#image-modal" });
-
 popupWithImage.setEventListeners();
+
+// Avatar
+const updateAvatarModal = document.querySelector("#update-avatar");
+const avatarForm = updateAvatarModal.querySelector(".modal__form");
+const updateAvatarButton = document.querySelector(".profile__image_edit-icon");
+
+const validateUpdateAvatar = new FormValidator(config, avatarForm);
+validateUpdateAvatar.enableValidation();
+
+const popupUpdateAvatar = new PopupWithForm(
+  "#update-avatar",
+  handleUpdateAvatar
+);
+popupUpdateAvatar.setEventListeners();
+
+function handleUpdateAvatar({ link }) {
+  popupUpdateAvatar.showLoading();
+  return api
+    .updateAvatar(link)
+    .then((data) => {
+      userInfo.setAvatar(data.avatar);
+      popupUpdateAvatar.close();
+      avatarForm.reset();
+      validateUpdateAvatar.toggleButtonState();
+    })
+    .catch((err) => {
+      console.error(err);
+      alert(`${err}, something went wrong`);
+    })
+    .finally(() => {
+      popupUpdateAvatar.hideLoading();
+    });
+}
+
+updateAvatarButton.addEventListener("click", () => {
+  popupUpdateAvatar.open();
+});
+
+// Confirm delete Card
+export const popupConfirmDeleteCard = new PopupWithConfirmation(
+  "#confirm-modal",
+  (card) => handleDelete(card)
+);
+popupConfirmDeleteCard.setEventListeners();
+
+function handleDelete(card) {
+  popupConfirmDeleteCard.open(() => {
+    popupConfirmDeleteCard.showLoading();
+    api
+      .deleteCard(card.getCardId())
+      .then(() => {
+        card.deleteCard();
+        popupConfirmDeleteCard.close();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(`${err}, something went wrong`);
+      })
+      .finally(() => {
+        popupConfirmDeleteCard.hideLoading();
+      });
+  });
+}
