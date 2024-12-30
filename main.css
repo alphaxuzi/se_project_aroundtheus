@@ -355,14 +355,14 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(76224c7fa303861462e7.woff2) format("woff2");
+  src: url(/se_project_aroundtheus/76224c7fa303861462e7.woff2) format("woff2");
 }
 @font-face {
   font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url(9c1163dc5cc2a1c9b55b.woff2) format("woff2");
+  src: url(/se_project_aroundtheus/9c1163dc5cc2a1c9b55b.woff2) format("woff2");
 }
 
 @font-face {
@@ -370,7 +370,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url(9ed71fbc8206e8069042.woff2) format("woff2");
+  src: url(/se_project_aroundtheus/9ed71fbc8206e8069042.woff2) format("woff2");
 }
 
 .card {
@@ -416,7 +416,7 @@
 }
 
 .card__like-button {
-  background: transparent url(8e08426681e5c1d5aa58.svg) center no-repeat;
+  background: transparent url(/se_project_aroundtheus/8e08426681e5c1d5aa58.svg) center no-repeat;
   width: 21px;
   height: 18px;
   align-self: center;
@@ -426,7 +426,7 @@
 }
 
 .card__like-button_active {
-  background: url(226461bd64622361ffb2.svg) center no-repeat;
+  background: url(/se_project_aroundtheus/226461bd64622361ffb2.svg) center no-repeat;
   width: 21px;
   height: 18px;
   align-self: center;
@@ -440,7 +440,7 @@
 }
 
 .card__delete-button{
-  background: url(8cb59aa98088a1653f62.svg) ;
+  background: url(/se_project_aroundtheus/8cb59aa98088a1653f62.svg) ;
   border: none;
   position: absolute;
   cursor: pointer;
@@ -640,7 +640,7 @@
 }
 
 .profile__edit-button {
-  background: url(8667ac4a523e8fc42e59.svg) center no-repeat;
+  background: url(/se_project_aroundtheus/8667ac4a523e8fc42e59.svg) center no-repeat;
   border: 1px solid white;
   width: 24px;
   height: 24px;
@@ -654,7 +654,7 @@
 }
 
 .profile__add-button {
-  background: transparent url(d86bb2edc2f6eadb96b7.svg) center no-repeat;
+  background: transparent url(/se_project_aroundtheus/d86bb2edc2f6eadb96b7.svg) center no-repeat;
   border: 1px solid white;
   width: 150px;
   height: 50px;
@@ -760,7 +760,7 @@
   left: calc(100% + 5px);
   width: 40px;
   height: 40px;
-  background-image: url(61b629a4dc3574160af9.svg);
+  background-image: url(/se_project_aroundtheus/61b629a4dc3574160af9.svg);
   background-repeat: no-repeat;
   background-size: contain;
 }
